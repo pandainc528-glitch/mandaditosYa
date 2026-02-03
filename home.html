@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Ñan - Inicio</title>
+    <link rel="stylesheet" href="home-styles.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Configuración de Firebase -->
+    <script src="firebase-config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header con foto de perfil y bienvenida -->
+        <header class="header">
+            <div class="user-info">
+                <div class="profile-pic" id="profilePic">
+                    <span class="profile-placeholder">👤</span>
+                </div>
+                <div class="greeting">
+                    <h1 class="welcome-text">Bienvenido</h1>
+                    <p class="user-name" id="userName">Nombre del usuario</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Categorías -->
+        <section class="categories-section">
+            <h2 class="section-title">Categorías</h2>
+            <div class="categories-grid">
+                <div class="category-card active" data-category="restaurantes">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&h=200&fit=crop" alt="Restaurantes">
+                    </div>
+                    <p class="category-name">Restaurantes</p>
+                </div>
+                
+                <div class="category-card" data-category="mercado">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=200&h=200&fit=crop" alt="Mercado">
+                    </div>
+                    <p class="category-name">Mercado</p>
+                </div>
+                
+                <div class="category-card" data-category="farmacia">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1576602976047-174e57a47881?w=200&h=200&fit=crop" alt="Farmacia">
+                    </div>
+                    <p class="category-name">Farmacia</p>
+                </div>
+                
+                <div class="category-card" data-category="ferreteria">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=200&h=200&fit=crop" alt="Ferretería">
+                    </div>
+                    <p class="category-name">Ferretería</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Título de categoría seleccionada -->
+        <section class="selected-category">
+            <h2 id="selectedCategoryTitle">Restaurantes</h2>
+        </section>
+
+        <!-- Productos -->
+        <section class="products-section" id="productsSection">
+            <!-- Los productos se cargarán dinámicamente aquí -->
+        </section>
+
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-page="home">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                <span class="nav-label">Inicio</span>
+            </button>
+            
+            <button class="nav-item" data-page="cart">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <span class="nav-label">Carrito</span>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+            
+            <button class="nav-item" data-page="favorites">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span class="nav-label">Favoritos</span>
+            </button>
+            
+            <button class="nav-item" data-page="profile">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <span class="nav-label">Perfil</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="home-script.js"></script>
+</body>
+</html>

@@ -216,9 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Redirigir a la pantalla principal después de 2 segundos
             setTimeout(() => {
-                window.location.href = 'index.html';
-                // En producción, redirigir a home.html
-                // window.location.href = 'home.html';
+                window.location.href = 'home.html';
             }, 2000);
             
         } catch (error) {

@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }));
         
         setTimeout(() => {
-            console.log('Redirigiendo a la pantalla principal...');
+            window.location.href = 'home.html';
         }, 2000);
     }
     
