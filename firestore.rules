@@ -1,0 +1,102 @@
+// ============================================
+// REGLAS DE SEGURIDAD PARA FIRESTORE
+// ============================================
+// 
+// Copia estas reglas en Firebase Console:
+// Firestore Database → Reglas
+//
+// Estas reglas permiten:
+// - Usuarios autenticados pueden leer y escribir solo sus propios datos
+// - Validación de estructura de datos
+// - Protección contra escrituras maliciosas
+//
+// ============================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Función auxiliar para verificar autenticación
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Función para verificar que el usuario es el dueño del documento
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // ============================================
+    // COLECCIÓN: users
+    // ============================================
+    match /users/{userId} {
+      // Permitir lectura solo si es el usuario dueño o admin
+      allow read: if isAuthenticated() && 
+                     (isOwner(userId) || 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'admin');
+      
+      // Permitir crear documento solo si es el usuario que se está registrando
+      allow create: if isAuthenticated() && 
+                       isOwner(userId) &&
+                       // Validar estructura de datos
+                       request.resource.data.keys().hasAll(['email', 'displayName', 'phone', 'rol', 'createdAt']) &&
+                       // Validar que el rol sea 'cliente' al crear
+                       request.resource.data.rol == 'cliente' &&
+                       // Validar que el email coincida con el usuario autenticado
+                       request.resource.data.email == request.auth.token.email;
+      
+      // Permitir actualizar solo sus propios datos
+      allow update: if isAuthenticated() && 
+                       isOwner(userId) &&
+                       // No permitir cambiar el rol (solo admins pueden hacer esto)
+                       request.resource.data.rol == resource.data.rol &&
+                       // No permitir cambiar el UID
+                       request.resource.data.uid == resource.data.uid &&
+                       // No permitir cambiar la fecha de creación
+                       request.resource.data.createdAt == resource.data.createdAt;
+      
+      // No permitir eliminar usuarios (solo admins)
+      allow delete: if false;
+    }
+    
+    // ============================================
+    // COLECCIÓN: restaurants (para futuro)
+    // ============================================
+    match /restaurants/{restaurantId} {
+      // Todos pueden leer restaurantes
+      allow read: if true;
+      
+      // Solo admins pueden crear/actualizar/eliminar restaurantes
+      allow write: if isAuthenticated() && 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'admin';
+    }
+    
+    // ============================================
+    // COLECCIÓN: orders (para futuro)
+    // ============================================
+    match /orders/{orderId} {
+      // Los usuarios pueden leer solo sus propias órdenes
+      allow read: if isAuthenticated() && 
+                     (request.auth.uid == resource.data.userId ||
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'admin');
+      
+      // Los usuarios pueden crear órdenes
+      allow create: if isAuthenticated() && 
+                       request.auth.uid == request.resource.data.userId;
+      
+      // Los usuarios pueden actualizar solo sus órdenes pendientes
+      allow update: if isAuthenticated() && 
+                       (request.auth.uid == resource.data.userId ||
+                        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'admin');
+      
+      // Solo admins pueden eliminar órdenes
+      allow delete: if isAuthenticated() && 
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'admin';
+    }
+    
+    // Denegar acceso a todas las demás colecciones
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

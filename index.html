@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Ñan - Delivery App</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Configuración de Firebase -->
+    <script src="firebase-config.js"></script>
+</head>
+<body>
+    <!-- Indicador de estado de Firebase -->
+    <div id="firebaseStatus" class="firebase-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Conectando...</span>
+    </div>
+
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <div class="logo-container">
+                <h1 class="logo-text">Ñan</h1>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div class="login-section">
+            <!-- Google Login Button -->
+            <button class="google-btn" id="googleLoginBtn">
+                <img src="https://www.google.com/favicon.ico" alt="Google" class="google-icon">
+                <span>Ingresar con Google</span>
+            </button>
+
+            <!-- Divider -->
+            <div class="divider">
+                <span>o</span>
+            </div>
+
+            <!-- Email/Phone Input -->
+            <div class="input-group">
+                <input type="text" id="emailPhone" placeholder="Correo electrónico o teléfono" class="input-field">
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Contraseña" class="input-field">
+            </div>
+
+            <!-- Login Button -->
+            <button class="login-btn" id="loginBtn">
+                Iniciar Sesión
+            </button>
+
+            <!-- Forgot Password -->
+            <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+
+            <!-- Sign Up Link -->
+            <div class="signup-section">
+                <span>¿No tienes cuenta? </span>
+                <a href="register.html" class="signup-link">Regístrate</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
