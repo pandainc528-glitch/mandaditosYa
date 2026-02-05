@@ -569,8 +569,7 @@ function navigateToPage(page) {
             break;
         case 'profile':
             // Redirigir a perfil
-            console.log('Ir a perfil');
-            showToast('Página de perfil próximamente');
+            window.location.href = 'profile.html';
             break;
     }
 }

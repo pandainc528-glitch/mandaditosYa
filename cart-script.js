@@ -206,72 +206,13 @@ function handleCheckout() {
         return;
     }
     
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const total = subtotal + DELIVERY_FEE;
-    
-    showConfirmModal(
-        '¿Confirmar pedido?',
-        `Total a pagar: $${total.toFixed(2)}`,
-        async () => {
-            try {
-                // Crear pedido en Firestore
-                await createOrder();
-                
-                // Limpiar carrito
-                cart = [];
-                saveCart();
-                renderCart();
-                
-                // Mostrar mensaje de éxito
-                showSuccessModal();
-                
-            } catch (error) {
-                console.error('Error al crear pedido:', error);
-                showToast('Error al procesar el pedido');
-            }
-        }
-    );
+    // Redirigir a la página de selección de ubicación
+    window.location.href = 'select-location.html';
 }
 
 async function createOrder() {
-    if (!currentUser) return;
-    
-    try {
-        const db = firebase.firestore();
-        
-        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const total = subtotal + DELIVERY_FEE;
-        
-        const orderData = {
-            userId: currentUser.uid,
-            customerName: currentUser.displayName || 'Usuario',
-            customerEmail: currentUser.email,
-            items: cart.map(item => ({
-                productId: item.id,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                subtotal: item.price * item.quantity,
-                category: item.category
-            })),
-            subtotal: subtotal,
-            deliveryFee: DELIVERY_FEE,
-            total: total,
-            status: 'pendiente',
-            paymentMethod: 'efectivo',
-            orderDate: firebase.firestore.FieldValue.serverTimestamp(),
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        
-        const orderRef = await db.collection('orders').add(orderData);
-        console.log('✅ Pedido creado:', orderRef.id);
-        
-        return orderRef.id;
-        
-    } catch (error) {
-        console.error('❌ Error al crear pedido:', error);
-        throw error;
-    }
+    // Esta función se movió a select-location-script.js
+    console.log('Redirigiendo a selección de ubicación...');
 }
 
 // ============================================
